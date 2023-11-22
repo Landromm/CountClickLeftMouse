@@ -11,8 +11,8 @@
     <Window.DataContext>
         <local:CountViewModel/>
     </Window.DataContext>
-    
-    <Grid>
+
+    <Grid Background="#333338">
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>
             <RowDefinition Height="*"/>
@@ -25,7 +25,8 @@
             HorizontalAlignment="Center"            
             FontSize="102"
             Width="200"
-            TextAlignment="Center">
+            TextAlignment="Center"
+            Foreground="WhiteSmoke">
 
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
@@ -47,13 +48,11 @@
             <Button
                 Grid.Row="1"
                 Command="{Binding ClickMe}"
-                BorderThickness="2"
-                BorderBrush="Black"
                 Content="CLICK ME"
                 FontSize="46"
                 FontFamily="Montserrat"
                 Cursor="Hand"                           
-                Margin="20,30,20,30">
+                Margin="20,30">
 
                 <Button.Style>
                     <Style TargetType="Button">
@@ -125,7 +124,7 @@
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"            
                 FontSize="66"
-                Foreground="Red"
+                Foreground="#f73131"
                 Margin="0,20,0,0"/>
 
 

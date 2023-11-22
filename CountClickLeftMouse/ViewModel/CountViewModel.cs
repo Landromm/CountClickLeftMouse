@@ -68,7 +68,6 @@ namespace CountClickLeftMouse.ViewModel
         }
         #endregion
 
-
         public ICommand ClickMe { get; }
         public ICommand Reset { get; }
 
