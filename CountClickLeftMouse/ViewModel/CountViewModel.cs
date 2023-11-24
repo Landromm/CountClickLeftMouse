@@ -14,67 +14,81 @@ namespace CountClickLeftMouse.ViewModel
 {
     internal class CountViewModel : BaseViewModel
     {
-        DispatcherTimer timer = null!;
-        DispatcherTimer dispatcherTimer = null!;
+		#region Поля.
+		static readonly private int countClick = 0;
+        static readonly private int finishPoint = 205;
+        static readonly private int countDown = 29;
+		#endregion
 
-        #region CountClick : int - Количество кликов.
+		#region Объекты классов.
+		DispatcherTimer timer = null!;
+		#endregion
 
-        /// <summary>Количество кликов. - поле.</summary>
-        private int _countClick;
+		#region Определение свойств.
 
-        /// <summary>Количество кликов. - свойство.</summary>
-        public int CountClick
-        {
-            get => _countClick;
-            set
-            {
-                _countClick = value;
-                OnPropertyChanged(nameof(CountClick));
-            }
-        }
-        #endregion
+		#region CountClick : int - Количество кликов.
 
-        #region TimerText : int - Отображение таймера
+		/// <summary>Количество кликов. - поле.</summary>
+		private int _countClick;
 
-        /// <summary>Отображение таймера - поле.</summary>
-        private int _timerText;
+		/// <summary>Количество кликов. - свойство.</summary>
+		public int CountClick
+		{
+			get => _countClick;
+			set
+			{
+				_countClick = value;
+				OnPropertyChanged(nameof(CountClick));
+			}
+		}
+		#endregion
 
-        /// <summary>Отображение таймера - свойство.</summary>
-        public int TimerText
-        {
-            get => _timerText;
-            set
-            {
-                _timerText = value;
-                OnPropertyChanged(nameof(TimerText));
-            }
-        }
-        #endregion
+		#region TimerText : int - Отображение таймера
 
-        #region CheckAvailability : bool - Победитель
+		/// <summary>Отображение таймера - поле.</summary>
+		private int _timerText;
 
-        /// <summary>Победитель - поле.</summary>
-        private bool _CheckAvailability;
+		/// <summary>Отображение таймера - свойство.</summary>
+		public int TimerText
+		{
+			get => _timerText;
+			set
+			{
+				_timerText = value;
+				OnPropertyChanged(nameof(TimerText));
+			}
+		}
+		#endregion
 
-        /// <summary>Победитель - свойство.</summary>
-        public bool CheckAvailability
-        {
-            get => _CheckAvailability;
-            set
-            {
-                _CheckAvailability = value;
-                OnPropertyChanged(nameof(CheckAvailability));
-            }
-        }
-        #endregion
+		#region CheckAvailability : bool - Флаг прохождения порога норматива.
 
-        public ICommand ClickMe { get; }
+		/// <summary>Флаг прохождения порога норматива. - поле.</summary>
+		private bool _CheckAvailability;
+
+		/// <summary>Флаг прохождения порога норматива. - свойство.</summary>
+		public bool CheckAvailability
+		{
+			get => _CheckAvailability;
+			set
+			{
+				_CheckAvailability = value;
+				OnPropertyChanged(nameof(CheckAvailability));
+			}
+		}
+		#endregion
+
+		#endregion
+
+		#region Определение событий.
+		public ICommand ClickMe { get; }
         public ICommand Reset { get; }
+		#endregion
 
-        public CountViewModel()
+		// Конструктор.
+		public CountViewModel()
         {
-            CountClick = 0;
-			TimerText = 29;
+            CountClick = countClick;
+			TimerText = finishPoint;
 
 			ClickMe = new BaseCommand(ExecuteCliclMeCommand, CanExecuteCliclMeCommand);
             Reset = new BaseCommand(ExecuteResetCommand);
@@ -86,6 +100,7 @@ namespace CountClickLeftMouse.ViewModel
 			timer.Tick += timer_Tick;
         }
 
+        // Метод подсчета количества кликов.
 		private void ExecuteCliclMeCommand(object obj)
 		{
 			if (!timer.IsEnabled)
@@ -93,25 +108,29 @@ namespace CountClickLeftMouse.ViewModel
 
 			CountClick++;
 
-			if (CountClick >= 205)
+			if (CountClick >= countDown)
 				CheckAvailability = true;
 		}
 
+        // Условие выполнения метода подсчета количества кликов.
 		private bool CanExecuteCliclMeCommand(object obj)
 		{
 			return TimerText > 0 ? true : false;
 		}
 
+        // Метод сброса счетчика и времени в значения по умолчанию.
 		private void ExecuteResetCommand(object obj)
 		{
 			if (timer.IsEnabled)
 				timer.Stop();
 
-			TimerText = 29;
-			CountClick = 0;
+			TimerText = countDown;
+			CountClick = countClick;
 			CheckAvailability = false;
 		}
 
+		/* Метод выолняющийся через равные промежутки,
+		в соответствии с параметрами "DispatcherTimer". */
 		private void timer_Tick(object sender, EventArgs e)
         {
             if (TimerText > 0)
@@ -119,6 +138,5 @@ namespace CountClickLeftMouse.ViewModel
             else
                 timer.Stop();
         }
-
     }
 }

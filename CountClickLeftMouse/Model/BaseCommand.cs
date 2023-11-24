@@ -9,12 +9,13 @@ namespace CountClickLeftMouse.Model
 {
     public class BaseCommand : ICommand
     {
-        //Fields
-        private readonly Action<object> _executeAction;
+		#region Поля.
+		private readonly Action<object> _executeAction;
         private readonly Predicate<object> _canExecuteAction;
+		#endregion
 
-        //Constructors 
-        public BaseCommand(Action<object> executeAction)
+		#region Конструкторы.
+		public BaseCommand(Action<object> executeAction)
         {
             _executeAction = executeAction;
             _canExecuteAction = null;
@@ -25,9 +26,10 @@ namespace CountClickLeftMouse.Model
             _executeAction = executeAction;
             _canExecuteAction = canExecuteAction;
         }
+		#endregion
 
-        //Events 
-        public event EventHandler? CanExecuteChanged
+		#region События.
+		public event EventHandler? CanExecuteChanged
         {
             add
             {
@@ -38,14 +40,15 @@ namespace CountClickLeftMouse.Model
                 CommandManager.RequerySuggested -= value;
             }
         }
+		#endregion
 
-        //Может ли команда выполняться
-        public bool CanExecute(object? parameter)
+		//Метод определяющий - Может ли команда выполняться.
+		public bool CanExecute(object? parameter)
         {
             return _canExecuteAction == null ? true : _canExecuteAction(parameter);
         }
 
-        //Выполнение команды.
+        //Метод выполнение команды.
         public void Execute(object? parameter)
         {
             _executeAction(parameter);
